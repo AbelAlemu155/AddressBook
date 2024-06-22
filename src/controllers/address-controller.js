@@ -8,18 +8,22 @@ exports.getConciseAddress=async  (req, res, next)=>{
     try{
         
         const id= parseInt(req.params[0]);
-        const page=  parseInt(req.params[1]);
-        const result1= await AddressData.getConciseAddress(id, page);
+        let prevEntryId= req.query.prevEntryId;
+        if(prevEntryId && !isNumeric(prevEntryId)){
+            return next(Error(ERR_CONSTANTS.badRequest));
+        }
+        if(!prevEntryId){
+            prevEntryId=0;
+        }
+        const result1= await AddressData.getConciseAddress(id, prevEntryId);
         
         const results= result1.map((data)=> {
-            console.log(data);
             return AddressConcise.fromRows(data)
         });
         if(results.length==0){
-           res.status(204);  
+          return res.status(204);  
         }
-        else res.status(200);
-        res.json({"data": results});
+        res.status(200).json({"data": results});
     }
     catch(err){
         console.error("error is: "+err); 
@@ -78,7 +82,9 @@ exports.fetchEntryWithAddress = async (req, res, next)=> {
         }
         const prevEntryId= parseInt(req.query.prevEntryId);
         const tuples = await AddressData.fetchEntryWithAddress(uId, prevEntryId);
-        console.log(tuples);
+        if(tuples.length==0){
+            return res.status(204);
+        }
         const aeDetails= AddressEntryDetail.addressEntryMapper(tuples); 
         res.status(200).json(aeDetails);
     } catch (error) {
