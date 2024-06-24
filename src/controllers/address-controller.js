@@ -16,7 +16,7 @@ exports.getConciseAddress=async  (req, res, next)=>{
             return AddressConcise.fromRows(data)
         });
         if(results.length==0){
-           res.status(204);  
+           res.status(204).json();  
         }
         else res.status(200);
         res.json({"data": results});
@@ -34,7 +34,7 @@ exports.getAddressDetail=async  (req, res, next)=> {
     const tuples= await AddressData.getAddressDetail(entryId);
     const data= tuples.map((data)=> Address.fromRows(data));
     if(data.length==0){
-        res.status(204);
+        res.status(204).json();
     }
     else res.status(200);
     res.json(data);
@@ -72,17 +72,21 @@ try {
 exports.fetchEntryWithAddress = async (req, res, next)=> {
     try {
         const uId= parseInt(req.params.uId);
-        if ((req.query.prevUid || req.query.prevEntryId) && 
-        (!isNumeric(req.query.prevUid) || !isNumeric(req.query.prevEntryId))){
+        if ((req.query.prevEntryId) && 
+        (!isNumeric(req.query.prevEntryId))){
            return next(Error(ERR_CONSTANTS.badRequest)); 
         }
-        const prevEntryId= parseInt(req.query.prevEntryId);
+        let prevEntryId= parseInt(req.query.prevEntryId);
+        if(isNaN(prevEntryId)){
+            prevEntryId=0;
+        }
         const tuples = await AddressData.fetchEntryWithAddress(uId, prevEntryId);
-        console.log(tuples);
+        if(tuples.length===0){
+            return res.status(204).json();
+        }
         const aeDetails= AddressEntryDetail.addressEntryMapper(tuples); 
         res.status(200).json(aeDetails);
     } catch (error) {
-        console.log(error);
         next(error);        
     }
 

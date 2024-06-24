@@ -1,6 +1,6 @@
 const pg= require('pg');
 const { Pool } = pg
-// function for getting a single instance of a pool
+// function for getting a single instance of a pool using closure
 const poolFunction= (()=>{
  let pool; 
  return ()=> {
