@@ -48,7 +48,10 @@ class AddressEntry{
 }
 
 class AddressEntryDetail
+
+
 {
+    //represents mapping of joined returns for the address entries and address schema.
     constructor(id, firstName, lastName ,addresses){
         this.id=id;
         this.firstName=firstName;

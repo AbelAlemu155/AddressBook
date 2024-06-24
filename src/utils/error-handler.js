@@ -2,7 +2,7 @@
 const ERR_CONSTANTS= require('../constants').ERR_CONSTANTS; 
 
 const errModule= (err,req,res,next)=> {
-
+    // cheking the error message passed the error middle ware
     switch(err.message){
         case(ERR_CONSTANTS.badRequest):
             const body= err.body ?? '';

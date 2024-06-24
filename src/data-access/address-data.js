@@ -4,22 +4,19 @@ const { PAGE_SIZE, PAGE_INTERNAL_SIZE } = require('../constants');
 const poolQuery= require('./data-config');
 
 //paginate using 5 entries
-exports.getConciseAddress= async (id, page)=>{
+exports.getConciseAddress= async (id, prevEntryId)=>{
     //TODO:: offset doesn't work well with large datasets... you can use a primary key attribute to set offset??
-    const offSet= PAGE_SIZE * (page-1);
-    // the most optimal pagination method is seek method with indexing of the attributes
-    //materialized view?? 
+   
     const res= await poolQuery().query(
         `select ae.id::int as entryID,first_name::text as firstName,
         last_name::text as lastName, 
          count(*)::int as count
          from address_entries ae join addresses ad
          on ae.id= ad.add_id
-         where u_id=$1  
+         where u_id=$1 and ae.id > $3
          group by ae.id,first_name,last_name
          limit $2
-         offset $3  
-        `,[id, PAGE_SIZE, offSet]
+        `,[id, PAGE_SIZE,prevEntryId]
     );
      
     return res.rows;
@@ -80,8 +77,11 @@ exports.addAddresstoEntry = async(address, entryId)=> {
     the size of the index scans
     4. TODO:: test the performance metrics
     **/
+
    // implementation of a pagination without using offset. Offsets don't scale well for large data sets
-   const tuples = 
+   const tuples = ( isNaN(prevEntryId))? await poolQuery().query(
+    'select * from paginated_address_entry_first($1,$2,$3)', [uId, PAGE_SIZE, PAGE_INTERNAL_SIZE])
+   :
    await poolQuery().query(
     `select * from paginated_address_entry($1,$2,$3,$4) 
        `, [uId, prevEntryId,  PAGE_SIZE, PAGE_INTERNAL_SIZE]
