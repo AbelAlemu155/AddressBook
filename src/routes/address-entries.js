@@ -2,7 +2,6 @@ const addRouter= require('express').Router();
 const { checkAuthenticated } = require('../utils/user-utility');
 const AddressController= require("../controllers/address-controller"); 
 const { addressEntryValidations, addressValidations } = require('../utils/validations/address-validation');
-const { validateUserId } = require('../utils/validations/user-validation');
 
 
 
