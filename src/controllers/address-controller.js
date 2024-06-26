@@ -14,7 +14,7 @@ exports.getConciseAddress=async  (req, res, next)=>{
         const results= result1.map((data)=> {
             console.log(data);
             return AddressConcise.fromRows(data)
-        });
+        }   );
         if(results.length==0){
            res.status(204).json();  
         }
@@ -76,10 +76,7 @@ exports.fetchEntryWithAddress = async (req, res, next)=> {
         (!isNumeric(req.query.prevEntryId))){
            return next(Error(ERR_CONSTANTS.badRequest)); 
         }
-        let prevEntryId= parseInt(req.query.prevEntryId);
-        if(isNaN(prevEntryId)){
-            prevEntryId=0;
-        }
+        let prevEntryId= parseInt(req.query.prevEntryId) || 0;
         const tuples = await AddressData.fetchEntryWithAddress(uId, prevEntryId);
         if(tuples.length===0){
             return res.status(204).json();

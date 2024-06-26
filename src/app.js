@@ -13,9 +13,8 @@ app.use(express.urlencoded({extended:true}));
 app.use('/address',addRouter); 
 app.use('/user', userRouter); 
 app.use((req, res)=>{
-    console.log("cehcking");
     res.status(404).json({'error': 'Resource not found'});
 });
 app.use(errModule); 
 
-var listener=app.listen(port,()=> console.log("listening on port:"+ listener.address().port));
+app.listen(port, console.log("listening on port:"+ process.env.port()));

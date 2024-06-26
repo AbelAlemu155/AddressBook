@@ -79,10 +79,7 @@ exports.addAddresstoEntry = async(address, entryId)=> {
     **/
 
    // implementation of a pagination without using offset. Offsets don't scale well for large data sets
-   const tuples = ( isNaN(prevEntryId))? await poolQuery().query(
-    'select * from paginated_address_entry_first($1,$2,$3)', [uId, PAGE_SIZE, PAGE_INTERNAL_SIZE])
-   :
-   await poolQuery().query(
+   const tuples = await poolQuery().query(
     `select * from paginated_address_entry($1,$2,$3,$4) 
        `, [uId, prevEntryId,  PAGE_SIZE, PAGE_INTERNAL_SIZE]
    );
