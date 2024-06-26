@@ -17,4 +17,4 @@ app.use((req, res)=>{
 });
 app.use(errModule); 
 
-app.listen(port, console.log("listening on port:"+ process.env.port()));
+app.listen(port, console.log("listening on port:"+ process.env.PORT));
