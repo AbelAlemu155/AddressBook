@@ -35,3 +35,4 @@ address_entries || -- }| addresses
 
 
 
+sample queries and entity relationship diagrams are shown below
