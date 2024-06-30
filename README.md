@@ -6,6 +6,7 @@ The application uses postgres database and implements efficient cursor based pag
 The requests are authorized using jwt library of node.js. Incoming request bodies are validated using JOI library. The users authenticate thorugh email and password. The passwords are stored salted and hashed. The project also makes use of the modular nature of middlewares and modules to handle verification and error handling.  The application is also organized in the MVC layer. The controller components interact with data through the models data layer. Routes are also organized in their own directory. Some time benchmarks and improvements are shown in the screenshot for optimized sql queries. 
 
 ### ER diagram
+```plantuml 
 entity users{
     * id: Integer
     --
@@ -33,6 +34,7 @@ entity addresses{
 
 address_entries || -- }| addresses
 
+```
 
 
 sample queries and entity relationship diagrams are shown below
