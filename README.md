@@ -7,10 +7,14 @@ The requests are authorized using jwt library of node.js. Incoming request bodie
 
 ![alt er diagram](image.png)
 
-## Query optimization using cursor based pagination and procedural methods 
+## Query optimization using cursor based pagination and procedural techniques
 
 It is to be noted that address_entries and address entity have one to many relationship where one address entry for a person could include one or more address informations. If the addresses and address_entries constitute large number of entries, then fetching data even through pagination using offset could result in a significant latency for requests requiring join between those relations.  Thus, all tables define an index on the foreign key element thus to use the primary key and foregin key as the cursor to start fetching data. Denormalizing the tables to improve performance could be one option but will result in redundant entries and we might also lose the modeling capability of our application. One example is shown in the image below. We used a procedural constuct and cursor based methods to efficiently fetch PAGE_SIZE(5 in the example) number of address_entries with PAGE_INTERNAL_SIZE(5) number of addresses for an aggregating route for a given user. 
 
-If we used window functions to perform the same grouping and operations while at the same time filtering u_id the time required is 457ms to fetch elements after the 8000th elemnt while that of the procedural method can accomplish this with only 15 ms. 
+If we used window functions to perform the same grouping and operations while at the same time filtering u_id the time required is 457ms to fetch elements after the 8000th element while that of the procedural method can accomplish this with only 15 ms. 
 ![alt optimized-proecural-sql-query](image-1.png)
 ![alt using-window-function](image-2.png)
+
+
+The output of the route for the request for aggregated resource request is shown below.
+![alt request](image-3.png)
