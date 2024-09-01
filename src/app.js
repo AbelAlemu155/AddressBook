@@ -5,7 +5,7 @@ const addRouter= require("./routes/address-entries");
 
 const app= express();
 const errModule= require('./utils/error-handler');  
-const port=3000;
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
