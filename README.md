@@ -3,7 +3,9 @@ This is a node.js application for and Address Book api. The users can sign in, r
 
 The application uses postgres database and implements efficient cursor based pagination. Routers that require joining muliple table are also efficiently implemented through indexing of foreign key attributes and tuple comparison without the need for denormalizing tables for efficient performance.
 
-The requests are authorized using jwt library of node.js. Incoming request bodies are validated using JOI library. The users authenticate thorugh email and password. The passwords are stored salted and hashed. The project also makes use of the modular nature of middlewares and modules to handle verification and error handling.  The application is also organized in the MVC layer. The controller components interact with data through the models data layer. Routes are also organized in their own directory. Some time benchmarks and improvements are shown in the screenshot for optimized sql queries. 
+The requests are authorized using jwt library of node.js. Incoming request bodies are validated using JOI library. The users authenticate thorugh email and password. The passwords are stored salted and hashed. The project also makes use of the modular nature of middlewares and modules to handle verification and error handling.  The application is also organized in the MVC layer. The controller components interact with data through the models data layer. Routes are also organized in their own directory. Some time benchmarks and improvements are shown in the screenshot for optimized sql queries.
+
+The system also makes efficient use of database pooling by using singleton patterns of closures in javascript.
 
 ![alt er diagram](readmeImages/image.png)
 
